@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Kereta Kita</string>
+    <string name="railfans_indonesia">Railfans Indonesia</string>
+    <string name="welcoming_text">Selamat datang di aplikasi Kereta Kita komunitas pecinta Kereta Api Indonesia unofficial PT. KAI</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

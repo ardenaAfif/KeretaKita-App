@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "303398556785",
+    "project_id": "medicalife-4b713",
+    "storage_bucket": "medicalife-4b713.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303398556785:android:573683aa8c989b2496b7d0",
+        "android_client_info": {
+          "package_name": "com.kuliah.medicalife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzHsKHmGjg-jMrHp6ANwqJO0sjgj4E3Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303398556785:android:c103a7dabcb2660d96b7d0",
+        "android_client_info": {
+          "package_name": "com.mazpiss.adminmedical"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzHsKHmGjg-jMrHp6ANwqJO0sjgj4E3Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303398556785:android:4031e6700ad977c596b7d0",
+        "android_client_info": {
+          "package_name": "id.ardev.keretakita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzHsKHmGjg-jMrHp6ANwqJO0sjgj4E3Fs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303398556785-v0muao43e2lp3sgo2j9q97toc6eeqeqt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

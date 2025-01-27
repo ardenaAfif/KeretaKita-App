@@ -1,4 +1,4 @@
-package id.ardev.keretakita.ui
+package id.ardev.keretakita.ui.home
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

@@ -2,7 +2,6 @@ package id.ardev.keretakita.ui
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,17 +9,23 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
+import id.ardev.keretakita.ui.home.HomeViewModel
 import id.ardev.keretakita.utils.FormatHelper
+import id.ardev.keretakita.utils.Resource
+import kotlinx.coroutines.flow.collectLatest
 import java.util.Calendar
 
 @AndroidEntryPoint
@@ -29,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showMenuJadwalKaStDialog() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_jadwal_ka_st)
@@ -63,100 +68,36 @@ class MainActivity : AppCompatActivity() {
         val searchStTujuan: AutoCompleteTextView = dialog.findViewById(R.id.searchStTujuan)
         val btnCariJadwal: TextView = dialog.findViewById(R.id.btnCariJadwal)
 
-        var stasiun = arrayOf(
-            "Purwokerto (PWT)",
-            "Gambir (GMR)",
-            "Surabaya Pasar Turi (SGI)",
-            "Surabaya Gubeng (SGU)",
-            "Yogyakarta (YK)",
-            "Madiun (MN)"
-        )
-        var adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, stasiun)
+        var stasiunAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
 
-        searchStAsal.setAdapter(adapter)
-        searchStTujuan.setAdapter(adapter)
+        searchStAsal.setAdapter(stasiunAdapter)
+        searchStTujuan.setAdapter(stasiunAdapter)
+        searchStAsal.threshold = 1
+        searchStTujuan.threshold = 1
 
-        // == search Stasiun Asal Setup ==
-        searchStAsal.setCompoundDrawablesWithIntrinsicBounds(
-            R.drawable.ic_depart, 0, 0, 0
-        )
+        lifecycleScope.launchWhenStarted {
+            viewModel.stasiunList.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val stasiunNames = resource.data?.map { "${it.nameStasiun} (${it.kodeStasiun})"  } ?: emptyList()
+                        stasiunAdapter.clear()
+                        stasiunAdapter.addAll(stasiunNames)
+                        stasiunAdapter.notifyDataSetChanged()
+                        Log.d(">>StasiunData", "Data loaded: ${resource.data}")
+                    }
+                    is Resource.Error -> {
+                        Log.e(">>Error", "Data loaded: ${resource.data}")
 
-        // Fungsi untuk menampilkan/menyembunyikan tombol clear
-        searchStAsal.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                // Periksa apakah drawable kanan (compoundDrawables[2]) tidak null
-                val drawableRight = searchStAsal.compoundDrawables[2]
-                if (drawableRight != null &&
-                    event.rawX >= (searchStAsal.right - drawableRight.bounds.width())
-                ) {
-                    searchStAsal.text.clear() // Clear text
-                    searchStAsal.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_depart, 0, 0, 0
-                    ) // Hapus ikon close
-                    return@setOnTouchListener true
+                    }
+                    is Resource.Loading -> {
+                    }
+                    else -> Unit
                 }
             }
-            false
         }
 
-        searchStAsal.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    searchStAsal.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_depart, 0, 0, 0
-                    )
-                } else {
-                    searchStAsal.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_depart, 0, R.drawable.ic_close, 0
-                    )
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        // == search Stasiun Asal Setup ==
-        searchStTujuan.setCompoundDrawablesWithIntrinsicBounds(
-            R.drawable.ic_arrival, 0, 0, 0
-        )
-
-        // Fungsi untuk menampilkan/menyembunyikan tombol clear
-        searchStTujuan.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                // Periksa apakah drawable kanan (compoundDrawables[2]) tidak null
-                val drawableRight = searchStTujuan.compoundDrawables[2]
-                if (drawableRight != null &&
-                    event.rawX >= (searchStTujuan.right - drawableRight.bounds.width())
-                ) {
-                    searchStTujuan.text.clear() // Clear text
-                    searchStTujuan.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_arrival, 0, 0, 0
-                    ) // Hapus ikon close
-                    return@setOnTouchListener true
-                }
-            }
-            false
-        }
-
-        searchStTujuan.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    searchStTujuan.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_arrival, 0, 0, 0
-                    )
-                } else {
-                    searchStTujuan.setCompoundDrawablesWithIntrinsicBounds(
-                        R.drawable.ic_arrival, 0, R.drawable.ic_close, 0
-                    )
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
+        setupAutoCompleteTextView(searchStAsal, R.drawable.ic_depart)
+        setupAutoCompleteTextView(searchStTujuan, R.drawable.ic_arrival)
 
         // == Button Cari jadwal ==
         btnCariJadwal.setOnClickListener {
@@ -166,6 +107,38 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setupAutoCompleteTextView(autoCompleteTextView: AutoCompleteTextView, iconRes: Int) {
+        autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+        autoCompleteTextView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableRight = autoCompleteTextView.compoundDrawables[2]
+                if (drawableRight != null &&
+                    event.rawX >= (autoCompleteTextView.right - drawableRight.bounds.width())
+                ) {
+                    autoCompleteTextView.text.clear()
+                    autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
+
+        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                    autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+                    Log.d(">>AutoComplete", "Input: $s")
+                } else {
+                    autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, R.drawable.ic_close, 0)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
 
     private fun setupWelcomingText() {
         val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)

@@ -2,6 +2,7 @@ package id.ardev.keretakita.ui
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -23,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
 import id.ardev.keretakita.ui.home.HomeViewModel
+import id.ardev.keretakita.ui.news.NewsActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
 import kotlinx.coroutines.flow.collectLatest
@@ -50,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             menuJadwalKaSt.setOnClickListener {
                 showMenuJadwalKaStDialog()
+            }
+            menuBerita.setOnClickListener {
+                Intent(this@MainActivity, NewsActivity::class.java).also {
+                    startActivity(it)
+                }
             }
         }
     }

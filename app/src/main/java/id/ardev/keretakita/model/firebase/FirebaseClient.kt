@@ -12,4 +12,9 @@ class FirebaseClient {
         return firestore.collection("stasiun")
             .get().await()
     }
+
+    suspend fun getAllJadwalKa() : QuerySnapshot {
+        return firestore.collection("train")
+            .get().await()
+    }
 }

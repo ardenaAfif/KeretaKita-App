@@ -30,7 +30,7 @@
         android:gravity="center_vertical"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
-        android:textSize="16dp"
+        android:textSize="16sp"
         tools:text="KA Argo Dwipangga"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="-10dp"
                     android:fontFamily="@font/roboto_semibold"
-                    android:text="4j 32m"
+                    tools:text="4j 32m"
                     android:textColor="@color/purple"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_semibold"
-                    android:text="17:32"
+                    tools:text="17:32"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_semibold"
                     android:gravity="center"
-                    android:text="Surabaya Gubeng\n(SGU)"
+                    tools:text="Surabaya Gubeng\n(SGU)"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>

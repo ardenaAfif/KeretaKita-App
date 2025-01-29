@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.jadwal.ka.DetailJadwalKaActivity">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -70,8 +69,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
                 android:gravity="center"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -89,9 +88,10 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_semibold"
                     android:gravity="center"
+                    android:padding="3dp"
                     android:textColor="@color/black"
                     android:textSize="14sp"
-                    tools:text="Purwokerto\n(PWT)" />
+                    tools:text="Purwokerto" />
             </LinearLayout>
 
             <LinearLayout
@@ -121,8 +121,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="8dp"
                 android:gravity="center"
+                android:layout_marginStart="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_semibold"
                     android:gravity="center"
-                    tools:text="Surabaya Gubeng\n(SGU)"
+                    tools:text="Lempuyangan"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>

@@ -1,4 +1,4 @@
-package id.ardev.keretakita.ui.jadwalbyst
+package id.ardev.keretakita.ui.jadwal.stasiun
 
 import android.os.Build
 import android.os.Bundle
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.adapter.JadwalKaByStasiunAdapter
 import id.ardev.keretakita.databinding.ActivityJadwalKaByStasiunBinding
-import id.ardev.keretakita.model.data.JadwalKA
 import id.ardev.keretakita.model.data.Stasiun
 import id.ardev.keretakita.model.firebase.FirebaseClient
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package id.ardev.keretakita.ui.jadwal
+package id.ardev.keretakita.ui.jadwal.ka
 
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +10,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.adapter.JadwalKaAdapter
 import id.ardev.keretakita.databinding.ActivityDetailJadwalKaBinding
 import id.ardev.keretakita.model.data.JadwalKA
-import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.FormatHelper.calculateDuration
 
 @AndroidEntryPoint

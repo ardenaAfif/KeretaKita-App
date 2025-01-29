@@ -23,9 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
-import id.ardev.keretakita.model.data.JadwalKA
-import id.ardev.keretakita.ui.jadwal.DetailJadwalKaActivity
-import id.ardev.keretakita.ui.jadwalbyst.JadwalKaByStasiunActivity
+import id.ardev.keretakita.ui.jadwal.ka.DetailJadwalKaActivity
+import id.ardev.keretakita.ui.jadwal.stasiun.JadwalKaByStasiunActivity
 import id.ardev.keretakita.ui.news.NewsActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
@@ -133,7 +132,7 @@ class HomeActivity : AppCompatActivity() {
                                     intent.putExtra("STASIUN_TUJUAN", stTujuan)
 
                                     startActivity(intent)
-                                    dialog.dismiss()
+//                                    dialog.dismiss()
                                 } else {
                                     Toast.makeText(this@HomeActivity, "Tidak ada jadwal yang ditemukan", Toast.LENGTH_SHORT).show()
                                 }

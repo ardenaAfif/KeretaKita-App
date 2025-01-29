@@ -19,8 +19,9 @@ data class JadwalKA(
 @Parcelize
 data class Stop(
     val station_name: String = "",
+    val station_kode: String = "",
     val arrival_time: String? = null,
     val departure_time: String? = null
 ) : Parcelable {
-    constructor() : this("", null, null)
+    constructor() : this("","", null, null)
 }

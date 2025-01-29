@@ -23,7 +23,9 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
+import id.ardev.keretakita.model.data.JadwalKA
 import id.ardev.keretakita.ui.jadwal.DetailJadwalKaActivity
+import id.ardev.keretakita.ui.jadwalbyst.JadwalKaByStasiunActivity
 import id.ardev.keretakita.ui.news.NewsActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
@@ -110,7 +112,45 @@ class HomeActivity : AppCompatActivity() {
 
         // == Button Cari jadwal ==
         btnCariJadwal.setOnClickListener {
-            Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show()
+            val stAsal = searchStAsal.text.toString()
+            val stTujuan = searchStTujuan.text.toString()
+
+            if (stAsal.isNotEmpty() && stTujuan.isNotEmpty()) {
+                lifecycleScope.launchWhenStarted {
+                    viewModel.stasiunList.collectLatest { resource ->
+                        when (resource) {
+                            is Resource.Success -> {
+
+                                val stBerangkat = resource.data?.find {
+                                    "${it.nameStasiun} (${it.kodeStasiun})" == stAsal
+                                }
+                                val stTujuan = resource.data?.find {
+                                    "${it.nameStasiun} (${it.kodeStasiun})" == stTujuan
+                                }
+                                if (stBerangkat != null && stTujuan != null) {
+                                    val intent = Intent(this@HomeActivity, JadwalKaByStasiunActivity::class.java)
+                                    intent.putExtra("STASIUN_BRNGKT", stBerangkat)
+                                    intent.putExtra("STASIUN_TUJUAN", stTujuan)
+
+                                    startActivity(intent)
+                                    dialog.dismiss()
+                                } else {
+                                    Toast.makeText(this@HomeActivity, "Tidak ada jadwal yang ditemukan", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            is Resource.Error -> {
+                                Toast.makeText(this@HomeActivity, "Error: ${resource.message}", Toast.LENGTH_SHORT).show()
+                            }
+                            is Resource.Loading -> {
+                                // Show loading indicator
+                            }
+                            else -> Unit
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Silakan pilih stasiun asal dan tujuan", Toast.LENGTH_SHORT).show()
+            }
         }
 
         dialog.show()

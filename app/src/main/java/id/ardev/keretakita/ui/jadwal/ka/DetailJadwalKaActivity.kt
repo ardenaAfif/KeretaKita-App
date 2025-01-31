@@ -1,11 +1,18 @@
 package id.ardev.keretakita.ui.jadwal.ka
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.adapter.JadwalKaAdapter
 import id.ardev.keretakita.databinding.ActivityDetailJadwalKaBinding
@@ -19,6 +26,7 @@ class DetailJadwalKaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailJadwalKaBinding
     private lateinit var jadwalKaAdapter: JadwalKaAdapter
     private var jadwalKa: JadwalKA? = null
+    private var interstitialAd: InterstitialAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +45,7 @@ class DetailJadwalKaActivity : AppCompatActivity() {
 
         toolbarSetup()
         setupStopRv()
+        loadInterstitialAd()
     }
 
     private fun toolbarSetup() {
@@ -81,9 +90,51 @@ class DetailJadwalKaActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            this,
+//            "ca-app-pub-3940256099942544/1033173712", // test ads
+            "ca-app-pub-3376466499193547/3833234576",
+            adRequest,
+            object : InterstitialAdLoadCallback(){
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError) {
+                    interstitialAd = null
+                }
+            }
+        )
+    }
+
+    private fun showInterstitialAdAndExit() {
+        if (interstitialAd != null) {
+            interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    interstitialAd = null // Reset iklan setelah ditutup
+                    loadInterstitialAd()
+                    finish() // Tutup aktivitas setelah iklan selesai
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    finish() // Jika gagal, langsung tutup aktivitas
+                }
+            }
+            interstitialAd?.show(this)
+        } else {
+            finish() // Jika iklan belum siap, langsung keluar
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
-        // Menangani klik tombol kembali
-        onBackPressedDispatcher.onBackPressed()
+        showInterstitialAdAndExit()
         return true
+    }
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        showInterstitialAdAndExit()
     }
 }

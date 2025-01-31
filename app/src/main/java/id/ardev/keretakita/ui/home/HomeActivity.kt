@@ -15,6 +15,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -26,6 +27,7 @@ import id.ardev.keretakita.databinding.ActivityMainBinding
 import id.ardev.keretakita.ui.jadwal.ka.DetailJadwalKaActivity
 import id.ardev.keretakita.ui.jadwal.stasiun.JadwalKaByStasiunActivity
 import id.ardev.keretakita.ui.news.NewsActivity
+import id.ardev.keretakita.ui.stasiun.InfoStasiunActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
 import kotlinx.coroutines.flow.collectLatest
@@ -62,6 +64,11 @@ class HomeActivity : AppCompatActivity() {
                     startActivity(it)
                 }
             }
+            menuInfoSt.setOnClickListener {
+                Intent(this@HomeActivity, InfoStasiunActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
         }
     }
 
@@ -85,6 +92,21 @@ class HomeActivity : AppCompatActivity() {
         searchStTujuan.setAdapter(stasiunAdapter)
         searchStAsal.threshold = 1
         searchStTujuan.threshold = 1
+
+        val tukerStasiun: ImageView = dialog.findViewById(R.id.tukerStasiun)
+
+        tukerStasiun.setOnClickListener {
+            it.animate()
+                .rotationBy(360f)
+                .setDuration(300)
+                .start()
+
+            val tempAsal = searchStAsal.text.toString()
+            val tempTujuan = searchStTujuan.text.toString()
+
+            searchStAsal.setText(tempTujuan)
+            searchStTujuan.setText(tempAsal)
+        }
 
         lifecycleScope.launchWhenStarted {
             viewModel.stasiunList.collectLatest { resource ->
@@ -158,6 +180,14 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     private fun setupAutoCompleteStasiun(autoCompleteTextView: AutoCompleteTextView, iconRes: Int) {
         autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+
+        // Saat pengguna memilih dari dropdown, disable AutoCompleteTextView
+        autoCompleteTextView.setOnItemClickListener { _, _, _, _ ->
+            autoCompleteTextView.isFocusable = false
+            autoCompleteTextView.isFocusableInTouchMode = false
+            autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, R.drawable.ic_close, 0)
+        }
+
         autoCompleteTextView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val drawableRight = autoCompleteTextView.compoundDrawables[2]
@@ -165,7 +195,10 @@ class HomeActivity : AppCompatActivity() {
                     event.rawX >= (autoCompleteTextView.right - drawableRight.bounds.width())
                 ) {
                     autoCompleteTextView.text.clear()
+                    autoCompleteTextView.isFocusable = true
+                    autoCompleteTextView.isFocusableInTouchMode = true
                     autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+
                     return@setOnTouchListener true
                 }
             }
@@ -181,6 +214,11 @@ class HomeActivity : AppCompatActivity() {
                     Log.d(">>AutoComplete", "Input: $s")
                 } else {
                     autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, R.drawable.ic_close, 0)
+                    autoCompleteTextView.postDelayed({
+                        if (autoCompleteTextView.text.isNotEmpty()) {
+                            autoCompleteTextView.showDropDown() // **Menampilkan dropdown hanya jika teks ada**
+                        }
+                    }, 100)
                 }
             }
 

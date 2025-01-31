@@ -45,6 +45,8 @@ android {
 
 dependencies {
 
+//    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+
     // Shimmer Effect
     implementation(libs.shimmer)
 

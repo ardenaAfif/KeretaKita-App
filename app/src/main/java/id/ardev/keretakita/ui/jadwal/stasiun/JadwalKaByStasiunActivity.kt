@@ -8,6 +8,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.adapter.JadwalKaByStasiunAdapter
 import id.ardev.keretakita.databinding.ActivityJadwalKaByStasiunBinding
@@ -28,6 +30,10 @@ class JadwalKaByStasiunActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJadwalKaByStasiunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
 
         getStasiuName()
         rvKaByStasiun()

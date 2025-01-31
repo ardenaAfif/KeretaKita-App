@@ -21,6 +21,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
@@ -45,6 +47,10 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
 
         setupWelcomingText()
         startRealtimeClock()

@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.adapter.InfoStasiunAdapter
@@ -28,6 +30,10 @@ class InfoStasiunActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityInfoStasiunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        MobileAds.initialize(this)
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
 
         toolbarSetup()
         getStasiunInfo()

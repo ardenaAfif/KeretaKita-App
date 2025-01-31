@@ -45,6 +45,9 @@ android {
 
 dependencies {
 
+    // admob
+    implementation(libs.play.services.ads)
+
 //    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
 
     // Shimmer Effect

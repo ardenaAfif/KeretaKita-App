@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <application
         android:name=".KeretaKitaApp"
@@ -15,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KeretaKita"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3376466499193547~9494014547">
+        </meta-data>
         <activity
             android:name=".ui.stasiun.DetailInfoStasiunActivity"
             android:exported="false" />

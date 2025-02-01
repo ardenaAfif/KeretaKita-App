@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityAboutBinding
+import id.ardev.keretakita.ui.about.privacy.PrivacyActivity
 import id.ardev.keretakita.ui.about.saweria.SaweriaActivity
 
 class AboutActivity : AppCompatActivity() {
@@ -29,10 +30,10 @@ class AboutActivity : AppCompatActivity() {
                 startActivity(Intent(this@AboutActivity, SaweriaActivity::class.java))
             }
             cardPrivacy.setOnClickListener {
-//                startActivity(Intent(this@AboutActivity, PrivacyActivity::class.java))
+                startActivity(Intent(this@AboutActivity, PrivacyActivity::class.java))
             }
             cardKeluar.setOnClickListener {
-                finish()
+                exitApplication()
             }
         }
     }
@@ -43,6 +44,11 @@ class AboutActivity : AppCompatActivity() {
         // Mengaktifkan tombol kembali
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    private fun exitApplication() {
+        finishAffinity()
+        System.exit(0)
     }
 
     override fun onSupportNavigateUp(): Boolean {

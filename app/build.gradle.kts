@@ -56,7 +56,9 @@ dependencies {
     // admob
     implementation(libs.play.services.ads)
 
+//    implementation("com.github.mkw8263:MindevPDFViewer:1.0.4")
 //    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+//    implementation("androidx.pdf:pdf-viewer-fragment:1.0.0-alpha06")
 
     // Shimmer Effect
     implementation(libs.shimmer)

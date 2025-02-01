@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="21dp"
@@ -41,40 +40,40 @@
 
         <AutoCompleteTextView
             android:id="@+id/searchNamaKa"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/edittext_background"
             android:layout_marginTop="21dp"
-            android:inputType="text"
-            android:singleLine="false"
-            android:lines="2"
-            android:ellipsize="end"
-            android:scrollHorizontally="false"
-            android:drawablePadding="10dp"
-            android:drawableEnd="@drawable/ic_close"
+            android:background="@drawable/edittext_background"
             android:drawableStart="@drawable/ic_depart"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:drawableEnd="@drawable/ic_close"
+            android:drawablePadding="10dp"
+            android:ellipsize="end"
+            android:hint="Nama Kereta"
+            android:inputType="text"
+            android:lines="2"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            android:hint="Nama Kereta" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <TextView
             android:id="@+id/btnCariKa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
             android:background="@drawable/bg_btn_stroke"
             android:fontFamily="@font/roboto_semibold"
             android:gravity="center"
             android:paddingHorizontal="50dp"
-            android:layout_marginTop="21dp"
             android:paddingVertical="12dp"
             android:text="Cari Kereta"
             android:textColor="@color/purple"
             android:textSize="14sp"
-            app:layout_constraintTop_toBottomOf="@id/searchNamaKa"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchNamaKa" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

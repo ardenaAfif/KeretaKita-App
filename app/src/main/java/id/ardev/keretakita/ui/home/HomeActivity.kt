@@ -23,6 +23,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.InstallStateUpdatedListener
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
+import com.google.android.play.core.ktx.isImmediateUpdateAllowed
+import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
@@ -33,8 +42,11 @@ import id.ardev.keretakita.ui.news.NewsActivity
 import id.ardev.keretakita.ui.stasiun.InfoStasiunActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Calendar
+import kotlin.time.Duration.Companion.seconds
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -43,6 +55,10 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
     private val viewModel by viewModels<HomeViewModel>()
+
+    // in App update
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateType = AppUpdateType.FLEXIBLE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +69,9 @@ class HomeActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
+        // inApp Review
+        showReviewPlayStore()
+        inAppUpdates()
         setupWelcomingText()
         startRealtimeClock()
         menuListener()
@@ -329,6 +348,58 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         handler.post(runnable)
+    }
+
+    private fun showReviewPlayStore() {
+        // in App Review
+        val manager = ReviewManagerFactory.create(applicationContext)
+        manager.requestReviewFlow()
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    manager.launchReviewFlow(this, it.result)
+                }
+            }
+    }
+
+    private fun inAppUpdates() {
+        // inApp Updates
+        appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
+        if (updateType == AppUpdateType.FLEXIBLE) {
+            appUpdateManager.registerListener(installStateUpdatedListener)
+        }
+        checkForAppUpdates()
+    }
+
+    private fun checkForAppUpdates() {
+        appUpdateManager.appUpdateInfo
+            .addOnSuccessListener { info ->
+                val isUpdateAvailable =
+                    info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                val isUpdateAllowed = when (updateType) {
+                    AppUpdateType.FLEXIBLE -> info.isFlexibleUpdateAllowed
+                    AppUpdateType.IMMEDIATE -> info.isImmediateUpdateAllowed
+                    else -> false
+                }
+
+                if (isUpdateAvailable && isUpdateAllowed) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateType,
+                        this,
+                        123
+                    )
+                }
+            }
+    }
+
+    private val installStateUpdatedListener = InstallStateUpdatedListener { state ->
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
+            Toast.makeText(applicationContext, "Download berhasil! Aplikasi akan restart dalam 5 detik!", Toast.LENGTH_LONG).show()
+            lifecycleScope.launch {
+                delay(5.seconds)
+                appUpdateManager.completeUpdate()
+            }
+        }
     }
 
     override fun onResume() {

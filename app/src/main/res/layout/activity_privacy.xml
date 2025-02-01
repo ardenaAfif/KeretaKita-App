@@ -19,7 +19,6 @@
         app:title="@string/privacy_policy"
         app:titleTextColor="@color/white" />
 
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -40,6 +40,7 @@ import id.ardev.keretakita.ui.jadwal.ka.DetailJadwalKaActivity
 import id.ardev.keretakita.ui.jadwal.stasiun.JadwalKaByStasiunActivity
 import id.ardev.keretakita.ui.news.NewsActivity
 import id.ardev.keretakita.ui.stasiun.InfoStasiunActivity
+import id.ardev.keretakita.ui.tracking.TrackingKaActivity
 import id.ardev.keretakita.utils.FormatHelper
 import id.ardev.keretakita.utils.Resource
 import kotlinx.coroutines.delay
@@ -84,6 +85,9 @@ class HomeActivity : AppCompatActivity() {
             }
             menuJadwalKa.setOnClickListener {
                 showMenuJadwalKaDialog()
+            }
+            menuTrackingKa.setOnClickListener {
+                showMenuTrackingKaDialog()
             }
             menuBerita.setOnClickListener {
                 Intent(this@HomeActivity, NewsActivity::class.java).also {
@@ -322,6 +326,73 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        dialog.show()
+    }
+
+    private fun showMenuTrackingKaDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_tracking_ka)
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        val searchNamaKa: AutoCompleteTextView = dialog.findViewById(R.id.searchNamaKa)
+        val btnCariJadwal: TextView = dialog.findViewById(R.id.btnCariKa)
+
+        val namaKaAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
+        searchNamaKa.setAdapter(namaKaAdapter)
+
+        searchNamaKa.threshold = 1
+
+        setupAutoCompleteStasiun(searchNamaKa, R.drawable.ic_depart)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.jadwalList.collectLatest { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val names = resource.data?.map { "[${it.no_ka}] ${it.name_ka} (${it.lintas})" } ?: emptyList()
+                        namaKaAdapter.clear()
+                        namaKaAdapter.addAll(names)
+                        namaKaAdapter.notifyDataSetChanged()
+                        Log.d(">>KeretaData", "Data loaded: ${resource.data}")
+                    }
+                    is Resource.Error -> {
+                        Log.e(">>Error", resource.message ?: "Error fetching data")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        // == Button Cari jadwal ==
+        btnCariJadwal.setOnClickListener {
+            val namaKa = searchNamaKa.text.toString()
+            lifecycleScope.launchWhenStarted {
+                viewModel.jadwalList.collectLatest { resource ->
+                    when (resource) {
+                        is Resource.Success -> {
+                            val selectedKereta = resource.data?.find {
+                                "[${it.no_ka}] ${it.name_ka} (${it.lintas})" == namaKa
+                            }
+                            if (selectedKereta != null) {
+                                val intent = Intent(this@HomeActivity, TrackingKaActivity::class.java)
+                                intent.putExtra("TrackingKa", selectedKereta)
+                                startActivity(intent)
+                                dialog.dismiss()
+                            } else {
+                                Toast.makeText(this@HomeActivity, "Kereta tidak ditemukan", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else -> {
+                            Toast.makeText(this@HomeActivity, "Gagal memuat data", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+        }
         dialog.show()
     }
 

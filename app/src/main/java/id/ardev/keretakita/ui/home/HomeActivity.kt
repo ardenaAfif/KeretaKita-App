@@ -26,6 +26,7 @@ import com.google.android.gms.ads.MobileAds
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityMainBinding
+import id.ardev.keretakita.ui.about.AboutActivity
 import id.ardev.keretakita.ui.jadwal.ka.DetailJadwalKaActivity
 import id.ardev.keretakita.ui.jadwal.stasiun.JadwalKaByStasiunActivity
 import id.ardev.keretakita.ui.news.NewsActivity
@@ -72,6 +73,11 @@ class HomeActivity : AppCompatActivity() {
             }
             menuInfoSt.setOnClickListener {
                 Intent(this@HomeActivity, InfoStasiunActivity::class.java).also {
+                    startActivity(it)
+                }
+            }
+            menuTentangKami.setOnClickListener {
+                Intent(this@HomeActivity, AboutActivity::class.java).also {
                     startActivity(it)
                 }
             }

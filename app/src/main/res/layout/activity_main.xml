@@ -143,6 +143,7 @@
                 android:id="@+id/menu_berita"
                 android:layout_width="0dp"
                 android:layout_height="110dp"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:src="@drawable/menu_berita" />
 
@@ -152,6 +153,11 @@
                 android:layout_height="110dp"
                 android:layout_weight="1"
                 android:src="@drawable/menu_tentang_kami" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="110dp"
+                android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>
 

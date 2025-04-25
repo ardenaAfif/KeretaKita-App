@@ -54,7 +54,7 @@ class InfoStasiunAdapter(private val context: Context) :
        )
     }
 
-    override fun onBindViewHolder(holder: InfoStasiunAdapter.InfoStasiunViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: InfoStasiunViewHolder, position: Int) {
         holder.bind(differ.currentList[position])
     }
 

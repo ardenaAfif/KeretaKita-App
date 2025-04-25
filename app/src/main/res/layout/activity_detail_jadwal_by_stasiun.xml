@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardJadwalRelasi"
+        android:id="@+id/cardKelasKa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -57,6 +57,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNamaKa">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:background="@drawable/edittext_background"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:fontFamily="@font/roboto_semibold"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Kelas KA" />
+
+            <TextView
+                android:id="@+id/tvKelasKa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardJadwalRelasi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="2dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardKelasKa">
 
         <LinearLayout
             android:layout_width="match_parent"

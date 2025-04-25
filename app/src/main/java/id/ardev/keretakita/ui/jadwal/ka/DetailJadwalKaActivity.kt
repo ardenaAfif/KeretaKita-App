@@ -59,6 +59,7 @@ class DetailJadwalKaActivity : AppCompatActivity() {
     private fun displayJadwalKa(jadwalKa: JadwalKA) {
         binding.apply {
             tvNamaKa.text = "KA ${jadwalKa.name_ka} [${jadwalKa.no_ka}]"
+            tvKelasKa.text = jadwalKa.kelas_ka
             waktuBerangkat.text = jadwalKa.time_berangkat
             stasiunBerangkat.text = jadwalKa.stops.firstOrNull()?.station_name ?: "N/A"
             waktuTujuan.text = jadwalKa.time_tujuan

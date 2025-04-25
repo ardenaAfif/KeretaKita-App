@@ -68,6 +68,7 @@ class JadwalKaByStasiunAdapter(
                 itemView.setOnClickListener {
                     val intent = Intent(context, DetailJadwalByStasiunActivity::class.java).apply {
                         putExtra("EXTRA_JADWAL_KA", jadwal)
+                        putExtra("EXTRA_KELAS_KA", jadwal.kelas_ka)
                         putExtra("EXTRA_NAMA_KA", jadwal.name_ka)
                         putExtra("EXTRA_NO_KA", jadwal.no_ka)
                         putExtra("EXTRA_STASIUN_BERANGKAT", stopBerangkat?.station_name)

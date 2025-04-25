@@ -71,6 +71,7 @@ class DetailJadwalByStasiunActivity : AppCompatActivity() {
     private fun jadwalKaSetup() {
         val namaKa = intent.getStringExtra("EXTRA_NAMA_KA") ?: "-"
         val noKa = intent.getStringExtra("EXTRA_NO_KA") ?: "-"
+        val kelasKa = intent.getStringExtra("EXTRA_KELAS_KA") ?: "-"
         val stasiunBerangkat = intent.getStringExtra("EXTRA_STASIUN_BERANGKAT") ?: "-"
         val waktuBerangkat = intent.getStringExtra("EXTRA_WAKTU_BERANGKAT") ?: "-"
         val stasiunTujuan = intent.getStringExtra("EXTRA_STASIUN_TUJUAN") ?: "-"
@@ -79,6 +80,7 @@ class DetailJadwalByStasiunActivity : AppCompatActivity() {
 
         // Set ke UI
         binding.tvNamaKa.text = "$namaKa [$noKa]"
+        binding.tvKelasKa.text = kelasKa
         binding.stasiunBerangkat.text = stasiunBerangkat
         binding.waktuBerangkat.text = waktuBerangkat
         binding.stasiunTujuan.text = stasiunTujuan

@@ -37,7 +37,8 @@ class HomeViewModel @Inject constructor(
                 val querySnapshot = firebaseClient.getAllStasiun()
                 val stasiunList = querySnapshot.toObjects(Stasiun::class.java)
                 Log.d(">>FirebaseData", "Data: $stasiunList")
-                _stasiunList.emit(Resource.Success(stasiunList))
+                val sortedList = stasiunList.sortedBy { it.nameStasiun }
+                _stasiunList.emit(Resource.Success(sortedList))
             } catch (exception: Exception) {
                 _stasiunList.emit(Resource.Error(exception.message.toString()))
             }

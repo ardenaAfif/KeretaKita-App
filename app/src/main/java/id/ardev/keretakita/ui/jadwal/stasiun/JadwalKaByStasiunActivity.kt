@@ -4,8 +4,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
@@ -30,6 +33,14 @@ class JadwalKaByStasiunActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJadwalKaByStasiunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            insets
+        }
 
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()

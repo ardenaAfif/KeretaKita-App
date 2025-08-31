@@ -31,6 +31,14 @@ class InfoStasiunActivity : AppCompatActivity() {
         binding = ActivityInfoStasiunBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            insets
+        }
+
         MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)

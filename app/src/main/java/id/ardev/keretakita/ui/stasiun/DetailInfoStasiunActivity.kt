@@ -3,7 +3,10 @@ package id.ardev.keretakita.ui.stasiun
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import dagger.hilt.android.AndroidEntryPoint
 import id.ardev.keretakita.databinding.ActivityDetailInfoStasiunBinding
 import id.ardev.keretakita.model.data.Stasiun
@@ -19,6 +22,14 @@ class DetailInfoStasiunActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailInfoStasiunBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            insets
+        }
 
         stasiun = intent.getParcelableExtra("EXTRA_STASIUN")
 

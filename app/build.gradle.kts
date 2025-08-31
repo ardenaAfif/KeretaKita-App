@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "id.ardev.keretakita"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "id.ardev.keretakita"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.2"
+        targetSdk = 36
+        versionCode = 5
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

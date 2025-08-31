@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import id.ardev.keretakita.R
@@ -19,6 +20,18 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val colorPrimary = ContextCompat.getColor(this, R.color.purple)
+        window.statusBarColor = colorPrimary
+        window.navigationBarColor = colorPrimary
+
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            insets
+        }
 
         menuListener()
         toolbarSetup()

@@ -27,7 +27,13 @@ class TrackingKaActivity : AppCompatActivity() {
         binding = ActivityTrackingKaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, 0, systemBars.right, 0)
+            binding.toolbar.setPadding(0, systemBars.top, 0, 0)
+            insets
+        }
 
         jadwalKa = intent.getParcelableExtra("TrackingKa")
 
@@ -49,7 +55,7 @@ class TrackingKaActivity : AppCompatActivity() {
                 layoutManager = LinearLayoutManager(this@TrackingKaActivity)
                 adapter = trackingKaAdapter
             }
-            trackingKaAdapter.submitList(ka.stops)
+            trackingKaAdapter.differ.submitList(ka.stops)
         }
     }
 

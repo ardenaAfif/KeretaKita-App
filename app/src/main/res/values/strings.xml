@@ -2,31 +2,35 @@
     <string name="app_name">Kereta Kita</string>
     <string name="railfans_indonesia">Railfans Indonesia</string>
     <string name="welcoming_text">Selamat datang di aplikasi Kereta Kita komunitas pecinta Kereta Api Indonesia unofficial PT. KAI</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="privacy_policy"><![CDATA[Privacy & Policy]]></string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="privacy_policy_title">Kebijakan Privasi dan Ketentuan Penggunaan</string>
-    <string name="privacy_policy_content">Tanggal Efektif: 1 Februari 2025
+    <string name="privacy_policy_content">
+        Privacy Policy and Terms of Use
+        \nApplication "Kereta Kita"
+        \nEffective Date: 1 Februari 2025
+        \nUpdate Date: 31 Agustus 2025
         \n\n1. Pendahuluan
-        \n\t\tSelamat datang di aplikasi "Kereta Kita". Kami berkomitmen untuk melindungi privasi Anda dan memastikan bahwa informasi pribadi Anda tetap aman. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi pribadi yang Anda berikan saat menggunakan aplikasi "Kereta Kita".
-        \n\n2. Informasi yang Dikumpulkan
-        \n\t\tKami tidak mengumpulkan informasi pribadi. Kami hanya mengumpulkan informasi terkait duna perkereta apian untuk meningkatkan pengalaman Anda dan memberikan layanan yang relevan. Jadwal kereta yang ditampilkan dalam aplikasi ini berdasarkan "GAPEKA 2025".
+        \n\tSelamat datang di aplikasi "Kereta Kita". Kami berkomitmen untuk melindungi privasi Anda dan memastikan bahwa informasi pribadi Anda tetap aman. Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi pribadi yang Anda berikan saat menggunakan aplikasi "Kereta Kita".
+        \n\n2. Informasi yang Kami Kumpulkan
+        \n\tAplikasi "Kereta Kita" adalah aplikasi informasi yang tidak memerlukan pengguna untuk membuat akun, login, atau memberikan data pribadi secara langsung seperti nama, alamat email, atau nomor telepon untuk menggunakan fitur utamanya. Informasi jadwal kereta api yang ditampilkan di aplikasi bersumber dari "GAPEKA 2025".
         \n\n3. Penggunaan Informasi
-        \n\t\t\t● Informasi yang kami kumpulkan digunakan untuk:
-        \n\t\t\t● Menyediakan, mengoperasikan, dan memelihara aplikasi.
-        \n\t\t\t● Meningkatkan, mempersonalisasi, dan memperluas aplikasi.
-        \n\t\t\t● Memahami dan menganalisis bagaimana Anda menggunakan aplikasi.
-        \n\t\t\t● Mengembangkan fitur, produk, dan layanan baru.
-        \n\t\t\t● Berkomunikasi dengan Anda, baik secara langsung maupun melalui salah satu mitra kami, termasuk untuk dukungan pelanggan, memberikan pembaruan, dan informasi lain yang terkait dengan aplikasi.
-        \n\n4. Perlindungan dan Penyimpangan Data
-        \n\t\tKami menerapkan berbagai langkah keamanan untuk memastikan keamanan informasi. Kami berusaha melindungi data Anda dari akses, penggunaan, atau pengungkapan yang tidak sah.
-        \n\n5. Usia Pengguna
-        \n\t\tPengguna usia 16 tahun keatas dapat menggunakan aplikasi "Kereta Kita" dengan akses ke semua fitur.
-        \n\n6. Hubungi Kami
-        \n\t\tJika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami di ardevcreations@gmail.com
-        \n\n\tDengan menggunakan aplikasi "Kereta Kita", Anda setuju untuk mengumpulkan dan menggunakan informasi sesuai dengan kebijakan ini.
-
+        \n\tInformasi yang kami kumpulkan digunakan untuk:
+        \n\t\t• Menyediakan, mengoperasikan, dan memelihara aplikasi.
+        \n\t\t• Meningkatkan, mempersonalisasi, dan memperluas aplikasi.
+        \n\t\t• Memahami dan menganalisis bagaimana Anda menggunakan aplikasi.
+        \n\t\t• Mengembangkan fitur, produk, dan layanan baru.
+        \n\t\t• Berkomunikasi dengan Anda, baik secara langsung maupun melalui salah satu mitra kami, termasuk untuk dukungan pelanggan, memberikan pembaruan, dan informasi lain yang terkait dengan aplikasi.
+        \n\n4. Data yang Dikumpulkan Secara Otomatis oleh Mitra Pihak Ketiga (Google)
+        \n\tUntuk mendukung operasional dan menyediakan aplikasi ini secara gratis, kami menampilkan iklan melalui layanan Google AdMob. Google AdMob adalah mitra periklanan kami dan dapat mengumpulkan data secara otomatis untuk menayangkan iklan yang relevan dan personal. Data yang mungkin dikumpulkan oleh AdMob antara lain:
+        \n\t\t• ID Iklan (Advertising ID): Pengidentifikasi unik yang dapat direset oleh pengguna untuk keperluan periklanan.
+        \n\t\t• Data Interaksi Iklan: Informasi tentang iklan yang Anda lihat dan interaksi Anda dengannya.
+        \n\n5. Perlindungan dan Penyimpanan Data
+        \n\tKami menerapkan berbagai langkah keamanan untuk memastikan keamanan informasi. Kami berusaha melindungi data Anda dari akses, penggunaan, atau pengungkapan yang tidak sah.
+        \n\n6. Usia Pengguna
+        \n\tPengguna usia 16 tahun ke atas dapat menggunakan aplikasi "Kereta Kita" dengan akses ke semua fitur.
+        \n\n7. Hubungi Kami
+        \n\tJika Anda memiliki pertanyaan tentang Kebijakan Privasi ini, silakan hubungi kami di: ardevcreations@gmail.com
+        \n\nDengan menggunakan aplikasi "Kereta Kita", Anda setuju untuk mengumpulkan dan menggunakan informasi sesuai dengan kebijakan ini.
     </string>
-
 </resources>

@@ -2,6 +2,7 @@ package id.ardev.keretakita.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,7 +13,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
@@ -149,7 +152,7 @@ class HomeActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_jadwal_ka_st)
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -158,15 +161,17 @@ class HomeActivity : AppCompatActivity() {
         val searchStAsal: AutoCompleteTextView = dialog.findViewById(R.id.searchStAsal)
         val searchStTujuan: AutoCompleteTextView = dialog.findViewById(R.id.searchStTujuan)
         val btnCariJadwal: TextView = dialog.findViewById(R.id.btnCariJadwal)
+        val tukerStasiun: ImageView = dialog.findViewById(R.id.tukerStasiun)
 
-        var stasiunAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
+        val stasiunAdapterAsal = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
+        val stasiunAdapterTujuan = ArrayAdapter(this, android.R.layout.simple_list_item_1, ArrayList<String>())
 
-        searchStAsal.setAdapter(stasiunAdapter)
-        searchStTujuan.setAdapter(stasiunAdapter)
+        searchStAsal.setAdapter(stasiunAdapterAsal)
+        searchStTujuan.setAdapter(stasiunAdapterTujuan)
+
         searchStAsal.threshold = 1
         searchStTujuan.threshold = 1
 
-        val tukerStasiun: ImageView = dialog.findViewById(R.id.tukerStasiun)
 
         tukerStasiun.setOnClickListener {
             it.animate()
@@ -179,6 +184,11 @@ class HomeActivity : AppCompatActivity() {
 
             searchStAsal.setText(tempTujuan)
             searchStTujuan.setText(tempAsal)
+
+            searchStAsal.dismissDropDown()
+            searchStTujuan.dismissDropDown()
+            searchStAsal.clearFocus()
+            searchStTujuan.clearFocus()
         }
 
         lifecycleScope.launchWhenStarted {
@@ -186,9 +196,13 @@ class HomeActivity : AppCompatActivity() {
                 when (resource) {
                     is Resource.Success -> {
                         val stasiunNames = resource.data?.map { "${it.nameStasiun} (${it.kodeStasiun})"  } ?: emptyList()
-                        stasiunAdapter.clear()
-                        stasiunAdapter.addAll(stasiunNames)
-                        stasiunAdapter.notifyDataSetChanged()
+                        stasiunAdapterAsal.clear()
+                        stasiunAdapterAsal.addAll(stasiunNames)
+                        stasiunAdapterAsal.notifyDataSetChanged()
+
+                        stasiunAdapterTujuan.clear()
+                        stasiunAdapterTujuan.addAll(stasiunNames)
+                        stasiunAdapterTujuan.notifyDataSetChanged()
                         Log.d(">>StasiunData", "Data loaded: ${resource.data}")
                     }
                     is Resource.Error -> {
@@ -254,11 +268,25 @@ class HomeActivity : AppCompatActivity() {
     private fun setupAutoCompleteStasiun(autoCompleteTextView: AutoCompleteTextView, iconRes: Int) {
         autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
 
+        autoCompleteTextView.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                autoCompleteTextView.dismissDropDown()
+            }
+        }
+
         // Saat pengguna memilih dari dropdown, disable AutoCompleteTextView
         autoCompleteTextView.setOnItemClickListener { _, _, _, _ ->
+            autoCompleteTextView.dismissDropDown()
+
+            autoCompleteTextView.clearFocus()
             autoCompleteTextView.isFocusable = false
             autoCompleteTextView.isFocusableInTouchMode = false
+
             autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, R.drawable.ic_close, 0)
+
+            autoCompleteTextView.hideKeyboard()
+
+            (autoCompleteTextView.adapter as? ArrayAdapter<*>)?.filter?.filter(null)
         }
 
         autoCompleteTextView.setOnTouchListener { _, event ->
@@ -270,7 +298,11 @@ class HomeActivity : AppCompatActivity() {
                     autoCompleteTextView.text.clear()
                     autoCompleteTextView.isFocusable = true
                     autoCompleteTextView.isFocusableInTouchMode = true
+                    autoCompleteTextView.requestFocus()
+
                     autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+
+                    autoCompleteTextView.dismissDropDown()
 
                     return@setOnTouchListener true
                 }
@@ -284,14 +316,21 @@ class HomeActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
                     autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0)
+                    autoCompleteTextView.dismissDropDown()
                     Log.d(">>AutoComplete", "Input: $s")
                 } else {
                     autoCompleteTextView.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, R.drawable.ic_close, 0)
-                    autoCompleteTextView.postDelayed({
-                        if (autoCompleteTextView.text.isNotEmpty()) {
-                            autoCompleteTextView.showDropDown() // **Menampilkan dropdown hanya jika teks ada**
+
+                    autoCompleteTextView.post {
+                        if (autoCompleteTextView.hasFocus()) {
+                            autoCompleteTextView.showDropDown()
                         }
-                    }, 100)
+                    }
+//                    autoCompleteTextView.postDelayed({
+//                        if (autoCompleteTextView.text.isNotEmpty()) {
+//                            autoCompleteTextView.showDropDown() // **Menampilkan dropdown hanya jika teks ada**
+//                        }
+//                    }, 100)
                 }
             }
 
@@ -303,7 +342,7 @@ class HomeActivity : AppCompatActivity() {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_jadwal_ka)
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         dialog.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
@@ -457,6 +496,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         handler.post(runnable)
+    }
+
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun showReviewPlayStore() {

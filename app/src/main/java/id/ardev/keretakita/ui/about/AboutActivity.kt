@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import id.ardev.keretakita.R
 import id.ardev.keretakita.databinding.ActivityAboutBinding
 import id.ardev.keretakita.ui.about.privacy.PrivacyActivity
@@ -15,11 +17,16 @@ import id.ardev.keretakita.ui.about.saweria.SaweriaActivity
 class AboutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAboutBinding
+    private lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAboutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        adView = binding.adView
+
+        loadBannerAd()
 
         val colorPrimary = ContextCompat.getColor(this, R.color.purple)
         window.statusBarColor = colorPrimary
@@ -35,6 +42,11 @@ class AboutActivity : AppCompatActivity() {
 
         menuListener()
         toolbarSetup()
+    }
+
+    private fun loadBannerAd() {
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
     }
 
     private fun menuListener() {
@@ -68,5 +80,20 @@ class AboutActivity : AppCompatActivity() {
         // Menangani klik tombol kembali
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onPause() {
+        adView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+
+    override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
     }
 }

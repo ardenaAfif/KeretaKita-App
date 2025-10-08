@@ -49,6 +49,10 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import kotlin.time.Duration.Companion.seconds
 import androidx.core.graphics.drawable.toDrawable
+import com.google.android.ump.ConsentDebugSettings
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -57,6 +61,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var handler: Handler
     private lateinit var runnable: Runnable
     private val viewModel by viewModels<HomeViewModel>()
+
+    private lateinit var consentInformation: ConsentInformation
 
     // in App update
     private lateinit var appUpdateManager: AppUpdateManager
@@ -67,9 +73,11 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        MobileAds.initialize(this)
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        requestConsentInfoUpdate()
+
+//        MobileAds.initialize(this)
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
 
         // inApp Review
         showReviewPlayStore()
@@ -77,6 +85,35 @@ class HomeActivity : AppCompatActivity() {
         setupWelcomingText()
         startRealtimeClock()
         menuListener()
+    }
+
+    private fun requestConsentInfoUpdate() {
+        consentInformation = UserMessagingPlatform.getConsentInformation(this)
+        val params = ConsentRequestParameters.Builder().build()
+
+        consentInformation.requestConsentInfoUpdate(
+            this,
+            params,
+            {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(this) {formError ->
+                    initializeMobileAdsAndLoadAd()
+                }
+            },
+            { requestConsentError ->
+                initializeMobileAdsAndLoadAd()
+            }
+        )
+    }
+
+    private fun initializeMobileAdsAndLoadAd() {
+//        MobileAds.initialize(this)
+//        val adRequest = AdRequest.Builder().build()
+//        binding.adView.loadAd(adRequest)
+        if (consentInformation.canRequestAds()) {
+            MobileAds.initialize(this)
+            val adRequest = AdRequest.Builder().build()
+            binding.adView.loadAd(adRequest)
+        }
     }
 
     private fun menuListener() {
@@ -476,12 +513,23 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+
+        binding.adView.resume()
+
         setupWelcomingText()
         startRealtimeClock()
     }
 
     override fun onPause() {
+        binding.adView.pause()
+
+        handler.removeCallbacks(runnable)
+
         super.onPause()
-        handler.removeCallbacks(runnable) // Stop the handler when the activity is paused
+    }
+
+    override fun onDestroy() {
+        binding.adView.destroy()
+        super.onDestroy()
     }
 }

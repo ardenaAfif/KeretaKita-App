@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "id.ardev.keretakita"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 36
         versionCode = 6
         versionName = "1.0.5"
@@ -46,15 +46,16 @@ android {
 dependencies {
 
     // In App Update
-    implementation("com.google.android.play:app-update:2.1.0")
-    implementation("com.google.android.play:app-update-ktx:2.1.0")
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
 
     // In App Review
     implementation(libs.review.ktx)
-    implementation("com.google.android.play:review:2.0.1")
+    implementation(libs.review)
 
     // admob
     implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
 
 //    implementation("com.github.mkw8263:MindevPDFViewer:1.0.4")
 //    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
@@ -64,20 +65,20 @@ dependencies {
     implementation(libs.shimmer)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation(libs.firebase.bom)
 //    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore-ktx:25.1.1")
+    implementation(libs.firebase.firestore.ktx)
 
     //Dagger hilt
-    implementation("com.google.dagger:hilt-android:2.50")
-    kapt("com.google.dagger:hilt-compiler:2.50")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     //Coroutines with firebase
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

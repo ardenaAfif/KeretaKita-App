@@ -39,7 +39,6 @@ class InfoStasiunActivity : AppCompatActivity() {
             insets
         }
 
-        MobileAds.initialize(this)
         val adRequest = AdRequest.Builder().build()
         binding.adView.loadAd(adRequest)
 
@@ -135,5 +134,20 @@ class InfoStasiunActivity : AppCompatActivity() {
         // Menangani klik tombol kembali
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onPause() {
+        binding.adView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.adView.resume()
+    }
+
+    override fun onDestroy() {
+        binding.adView.destroy()
+        super.onDestroy()
     }
 }

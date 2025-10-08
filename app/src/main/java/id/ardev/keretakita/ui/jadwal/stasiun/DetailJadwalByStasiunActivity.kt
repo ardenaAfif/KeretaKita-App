@@ -1,7 +1,7 @@
 package id.ardev.keretakita.ui.jadwal.stasiun
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -11,10 +11,10 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
-import id.ardev.keretakita.R
 import id.ardev.keretakita.adapter.JadwalKaAdapter
 import id.ardev.keretakita.databinding.ActivityDetailJadwalByStasiunBinding
 import id.ardev.keretakita.model.data.JadwalKA
@@ -41,7 +41,12 @@ class DetailJadwalByStasiunActivity : AppCompatActivity() {
         toolbarAction()
         jadwalKaSetup()
         rvJadwalByStasiun()
-        loadInterstitialAd()
+
+        setupOnBackPressedCallback()
+
+        MobileAds.initialize(this) { initializationStatus ->
+            loadInterstitialAd()
+        }
     }
 
     private fun toolbarAction() {
@@ -100,8 +105,7 @@ class DetailJadwalByStasiunActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(
             this,
-//            "ca-app-pub-3940256099942544/1033173712", // test ads
-            "ca-app-pub-3376466499193547/3833234576",
+            "ca-app-pub-8985795073717349/5050059077",
             adRequest,
             object : InterstitialAdLoadCallback(){
                 override fun onAdLoaded(ad: InterstitialAd) {
@@ -139,9 +143,10 @@ class DetailJadwalByStasiunActivity : AppCompatActivity() {
         return true
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        showInterstitialAdAndExit()
+    private fun setupOnBackPressedCallback() {
+        onBackPressedDispatcher.addCallback(this) {
+            showInterstitialAdAndExit()
+        }
     }
 
 }

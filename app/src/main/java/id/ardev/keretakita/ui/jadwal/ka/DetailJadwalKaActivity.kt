@@ -1,11 +1,9 @@
 package id.ardev.keretakita.ui.jadwal.ka
 
-import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,6 +12,7 @@ import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +22,6 @@ import id.ardev.keretakita.model.data.JadwalKA
 import id.ardev.keretakita.utils.FormatHelper.calculateDuration
 
 @AndroidEntryPoint
-@RequiresApi(Build.VERSION_CODES.O)
 class DetailJadwalKaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailJadwalKaBinding
@@ -56,7 +54,12 @@ class DetailJadwalKaActivity : AppCompatActivity() {
 
         toolbarSetup()
         setupStopRv()
-        loadInterstitialAd()
+
+        setupOnBackPressedCallback()
+
+        MobileAds.initialize(this) { initializationStatus ->
+            loadInterstitialAd()
+        }
     }
 
     private fun toolbarSetup() {
@@ -106,8 +109,7 @@ class DetailJadwalKaActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(
             this,
-//            "ca-app-pub-3940256099942544/1033173712", // test ads
-            "ca-app-pub-3376466499193547/3833234576",
+            "ca-app-pub-8985795073717349/5050059077",
             adRequest,
             object : InterstitialAdLoadCallback(){
                 override fun onAdLoaded(ad: InterstitialAd) {
@@ -145,8 +147,9 @@ class DetailJadwalKaActivity : AppCompatActivity() {
         return true
     }
 
-    @SuppressLint("MissingSuperCall")
-    override fun onBackPressed() {
-        showInterstitialAdAndExit()
+    private fun setupOnBackPressedCallback() {
+        onBackPressedDispatcher.addCallback(this) {
+            showInterstitialAdAndExit()
+        }
     }
 }

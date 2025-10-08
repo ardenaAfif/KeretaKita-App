@@ -15,8 +15,8 @@ android {
         applicationId = "id.ardev.keretakita"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.0.5"
+        versionCode = 7
+        versionName = "1.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.shimmer)
 
     // Firebase
-    implementation(libs.firebase.bom)
+    implementation(platform(libs.firebase.bom))
 //    implementation("com.google.firebase:firebase-analytics")
     implementation(libs.firebase.firestore.ktx)
 
